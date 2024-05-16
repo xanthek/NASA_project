@@ -131,3 +131,10 @@ dist
 
 # Visual Code files
 .DS_Store
+
+
+# exclude everything
+server/public/*
+
+# exception to the rule
+!server/public/images/
