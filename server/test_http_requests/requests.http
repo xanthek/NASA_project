@@ -1,0 +1,7 @@
+### Get launches
+
+GET http://localhost:4000/launches
+
+### Get planets
+
+GET http://localhost:4000/planets
