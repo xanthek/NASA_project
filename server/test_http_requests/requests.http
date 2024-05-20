@@ -5,3 +5,36 @@ GET http://localhost:4000/launches
 ### Get planets
 
 GET http://localhost:4000/planets
+
+### add new launch
+POST http://localhost:4000/launches HTTP/1.1
+content-type: application/json
+
+{
+    "mission": "Kepler Expedition XI",
+    "rocket": "Explorer IS1",
+    "launchDate": "Jan 31, 2037",
+    "destination": "Kepler-442 h"
+}
+
+### add new launch missing rocket name
+POST http://localhost:4000/launches HTTP/1.1
+content-type: application/json
+
+{
+    "mission": "Kepler Expedition XI",
+    "rocket": "",
+    "launchDate": "Jan 31, 2037",
+    "destination": "Kepler-442 h"
+}
+
+### add new launch wrong launch date
+POST http://localhost:4000/launches HTTP/1.1
+content-type: application/json
+
+{
+    "mission": "Kepler Expedition XI",
+    "rocket": "Explorer IS1",
+    "launchDate": "keke",
+    "destination": "Kepler-442 h"
+}
