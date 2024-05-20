@@ -14,7 +14,7 @@ content-type: application/json
     "mission": "Kepler Expedition XI",
     "rocket": "Explorer IS1",
     "launchDate": "Jan 31, 2037",
-    "destination": "Kepler-442 h"
+    "target": "Kepler-442 h"
 }
 
 ### add new launch missing rocket name
@@ -25,7 +25,7 @@ content-type: application/json
     "mission": "Kepler Expedition XI",
     "rocket": "",
     "launchDate": "Jan 31, 2037",
-    "destination": "Kepler-442 h"
+    "target": "Kepler-442 h"
 }
 
 ### add new launch wrong launch date
@@ -36,5 +36,12 @@ content-type: application/json
     "mission": "Kepler Expedition XI",
     "rocket": "Explorer IS1",
     "launchDate": "keke",
-    "destination": "Kepler-442 h"
+    "target": "Kepler-442 h"
 }
+
+### delete launch 
+DELETE http://localhost:4000/launches/100 HTTP/1.1
+
+### delete launch wrong id
+DELETE http://localhost:4000/launches/10 HTTP/1.1
+
