@@ -8,7 +8,7 @@
     "watch": "./node_modules/.bin/nodemon ./src/server.js",
     "test": "jest",
     "test-watch": "jest --watch",
-    "cluster": "pm2 start src/server.js"
+    "cluster": "pm2 start src/server.js -i 1"
   },
   "author": "",
   "license": "ISC",
