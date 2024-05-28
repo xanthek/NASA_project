@@ -2,20 +2,6 @@
  const planets = require('./planets.mongo.js');
 
  DEFAULT_FLIGHT_NUMBER = 100;
- 
-//  const launch = {
-//     flightNumber: 100,
-//     mission: 'Kepler Expedition X',
-//     rocket: 'Explorer IS1',
-//     launchDate: new Date('December 27, 2030'),
-//     target: 'Kepler-442 b',
-//     upcoming: true,
-//     success: true,
-//  }
-
-//  saveLaunch(launch);
-
-
 
  async function getAllLaunches() {
   try {
@@ -44,8 +30,8 @@
 
  async function getLatestFlightNumber() {
   const latestLaunch = await launches
-  .findOne()
-  .sort('flightNumber');
+  .findOne({})
+  .sort('-flightNumber');
 
   if (!latestLaunch) {
     return DEFAULT_FLIGHT_NUMBER;
@@ -60,18 +46,24 @@
     flightNumber: newFlightNumber,
     customers: ['Janusz', 'NASA']
   });
-  saveLaunch(newLaunch);
+  await saveLaunch(newLaunch);
  }
 
- function existsLaunchWithId(launchId) {
-  return launches.has(launchId);
+ async function existsLaunchWithId(launchId) {
+  return await launches.findOne({
+    flightNumber: launchId
+  });
  }
 
- function abortLaunchById(launchId) {
-  const aborted = launches.get(launchId);
-  aborted.upcoming = false;
-  aborted.success = false;
-  return aborted;
+ async function abortLaunchById(launchId) {
+  const aborted = await launches.updateOne({
+    flightNumber: launchId
+  }, {
+    upcoming: false,
+    success: false
+  });
+
+  return aborted.modifiedCount === 1;
  }
 
  module.exports = {
