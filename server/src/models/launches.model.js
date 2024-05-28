@@ -1,31 +1,66 @@
- const launches =  new Map();
+ const launches = require('./launches.mongo.js');
+ const planets = require('./planets.mongo.js');
 
- let latestFlightNumber = 100;
+ DEFAULT_FLIGHT_NUMBER = 100;
  
- const launch = {
-    flightNumber: 100,
-    mission: 'Kepler Expedition X',
-    rocket: 'Explorer IS1',
-    launchDate: new Date('December 27, 2030'),
-    target: 'Kepler-442 b',
-    customer: ['ZTM', 'NASA'],
-    upcoming: true,
-    success: true,
+//  const launch = {
+//     flightNumber: 100,
+//     mission: 'Kepler Expedition X',
+//     rocket: 'Explorer IS1',
+//     launchDate: new Date('December 27, 2030'),
+//     target: 'Kepler-442 b',
+//     upcoming: true,
+//     success: true,
+//  }
+
+//  saveLaunch(launch);
+
+
+
+ async function getAllLaunches() {
+  try {
+    return await launches
+    .find({}, {'_id': 0, '__v': 0}); // excludes _id and version __v from response
+  } catch (error) {
+    console.error(error);
+  }
+
  }
 
- launches.set(launch.flightNumber, launch);
+ async function saveLaunch(launch) {
+  const planet = await planets.findOne({
+    keplerName: launch.target
+  });
 
- function getAllLaunches() {
-   return Array.from(launches.values());
+  if (!planet) {
+    throw new Error('Now matching planet found');
+  }
+  await launches.findOneAndUpdate({
+    flightNumber: launch.flightNumber,
+  }, launch, {
+    upsert: true
+  });
  }
 
- function addNewLaunch(launch) {
-  latestFlightNumber++;
-  launches.set(latestFlightNumber, Object.assign(launch, {
-    success: true,
-    upcoming: true,
-    flightNumber: latestFlightNumber,
-    customer: ['Janusz', 'NASA']}));
+ async function getLatestFlightNumber() {
+  const latestLaunch = await launches
+  .findOne()
+  .sort('flightNumber');
+
+  if (!latestLaunch) {
+    return DEFAULT_FLIGHT_NUMBER;
+  }
+
+  return latestLaunch.flightNumber;
+ }
+
+ async function addNewLaunch(launch) {
+  const newFlightNumber = await getLatestFlightNumber() + 1 ;
+  const newLaunch = Object.assign(launch, {
+    flightNumber: newFlightNumber,
+    customers: ['Janusz', 'NASA']
+  });
+  saveLaunch(newLaunch);
  }
 
  function existsLaunchWithId(launchId) {
