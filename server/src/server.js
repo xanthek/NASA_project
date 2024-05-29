@@ -1,25 +1,20 @@
 const http = require('http');
-const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
+
+console.log(process.env.PORT);
 
 const app = require('./app.js');
+const {mongoConnect} = require('./services/mongo.js');
 const {loadPlanetsData} = require('./models/planets.model.js');
+const { log } = require('console');
 
 const PORT = process.env.PORT || 4000;
 
-const MONGO_URL = process.env.MONGO_URL;
-
 const server = http.createServer(app);
 
-mongoose.connection.once('open', () => {
-    console.log('MongoDB connection ready');
-});
-
-mongoose.connection.on('error', (err) => {
-    console.error(err);
-});
-
 async function startServer() {
-    await mongoose.connect(MONGO_URL);
+    await mongoConnect();
     try {
         await loadPlanetsData();
     }
