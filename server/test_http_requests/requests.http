@@ -1,13 +1,13 @@
 ### Get launches
 
-GET http://localhost:4000/launches
+GET http://localhost:4000/v1/launches
 
 ### Get planets
 
-GET http://localhost:4000/planets
+GET http://localhost:4000/v1/planets
 
 ### add new launch
-POST http://localhost:4000/launches HTTP/1.1
+POST http://localhost:4000/v1/launches HTTP/1.1
 content-type: application/json
 
 {
@@ -18,7 +18,7 @@ content-type: application/json
 }
 
 ### add new launch missing rocket name
-POST http://localhost:4000/launches HTTP/1.1
+POST http://localhost:4000/v1/launches HTTP/1.1
 content-type: application/json
 
 {
@@ -29,7 +29,7 @@ content-type: application/json
 }
 
 ### add new launch wrong launch date
-POST http://localhost:4000/launches HTTP/1.1
+POST http://localhost:4000/v1/launches HTTP/1.1
 content-type: application/json
 
 {
@@ -40,8 +40,8 @@ content-type: application/json
 }
 
 ### delete launch 
-DELETE http://localhost:4000/launches/100 HTTP/1.1
+DELETE http://localhost:4000/v1/launches/100 HTTP/1.1
 
 ### delete launch wrong id
-DELETE http://localhost:4000/launches/10 HTTP/1.1
+DELETE http://localhost:4000/v1/launches/10 HTTP/1.1
 
