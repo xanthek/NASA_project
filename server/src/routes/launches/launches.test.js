@@ -2,6 +2,7 @@ const request = require('supertest');
 const app = require('../../app');
 const {mongoConnect, mongoDisconnect} = require('../../services/mongo');
 
+const API_VERSION = process.env.API_VERSION || 'v1';
 
 describe('Launches API', () => {
     beforeAll(async() => {
@@ -15,7 +16,7 @@ describe('Launches API', () => {
     describe('Test GET /launches', () => {
         test('It should response with 200 success', async () => {
             const response = await request(app)
-            .get('/launches')
+            .get(`/${API_VERSION}/launches`)
             .expect('Content-Type', /json/) // we can use regular expression here
             .expect(200);
         })
@@ -44,7 +45,7 @@ describe('Launches API', () => {
     
         test('It should respond with 201 created', async () => {
             const response = await request(app)
-            .post('/launches')
+            .post(`/${API_VERSION}/launches`)
             .send(completeLaunchData)
             .expect('Content-Type', /json/) // we can use regular expression here
             .expect(201);
@@ -57,7 +58,7 @@ describe('Launches API', () => {
         });
         test('It should catch missing required properties', async () => {
             const response = await request(app)
-            .post('/launches')
+            .post(`/${API_VERSION}/launches`)
             .send(launchDataWithoutDate)
             .expect('Content-Type', /json/)
             .expect(400);
@@ -68,7 +69,7 @@ describe('Launches API', () => {
         });
         test('It should catch invalid dates', async () => {
             const response = await request(app)
-            .post('/launches')
+            .post(`/${API_VERSION}/launches`)
             .send(launchDataWithInvalidDate)
             .expect('Content-Type', /json/)
             .expect(400);
