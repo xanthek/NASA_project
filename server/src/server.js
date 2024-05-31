@@ -2,12 +2,10 @@ const http = require('http');
 const dotenv = require('dotenv');
 dotenv.config();
 
-console.log(process.env.PORT);
-
 const app = require('./app.js');
 const {mongoConnect} = require('./services/mongo.js');
 const {loadPlanetsData} = require('./models/planets.model.js');
-const { log } = require('console');
+const {loadLaunchData} = require('./models/launches.model.js');
 
 const PORT = process.env.PORT || 4000;
 
@@ -17,6 +15,7 @@ async function startServer() {
     await mongoConnect();
     try {
         await loadPlanetsData();
+        await loadLaunchData();
     }
     catch(err) {
         console.log(err);
