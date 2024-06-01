@@ -2,19 +2,21 @@
  
  const launches = require('./launches.mongo.js');
  const planets = require('./planets.mongo.js');
-const { query } = require('express');
 
  const DEFAULT_FLIGHT_NUMBER = 100;
  const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/query';
 
- async function getAllLaunches() {
+ async function getAllLaunches(skip, limit) {
+  
   try {
     return await launches
-    .find({}, {'_id': 0, '__v': 0}); // excludes _id and version __v from response
+    .find({}, {'_id': 0, '__v': 0}) // excludes _id and version __v from response
+    .sort({flightNumber: 1})
+    .skip(skip)
+    .limit(limit); 
   } catch (error) {
     console.error(error);
   }
-
  }
 
  async function saveLaunch(launch) {
