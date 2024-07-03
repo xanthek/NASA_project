@@ -138,3 +138,7 @@ server/public/*
 
 # exception to the rule
 !server/public/images/
+
+
+#security keys
+.keys/
